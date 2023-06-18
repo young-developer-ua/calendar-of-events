@@ -1,1 +1,1 @@
-# calendar_of_events
+# calendar-of-events
