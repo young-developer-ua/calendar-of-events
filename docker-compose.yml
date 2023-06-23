@@ -1,0 +1,39 @@
+version: '3'
+services:
+    frontend:
+        container_name: calendar-app
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                BUILD_COMMAND: build
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - db
+    db:
+        image: mysql:5.7.22
+        container_name: db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - dbdata:/var/lib/mysql/
+        networks:
+            - app-network
+networks:
+    app-network:
+        driver: bridge
+volumes:
+    dbdata:
+        driver: local
